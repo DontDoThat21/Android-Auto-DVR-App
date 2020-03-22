@@ -28,10 +28,15 @@ namespace DVR_Managing_App
         {            
             TotalRemainingSpace = Android.OS.Environment.ExternalStorageDirectory.FreeSpace;
             TotalSpacePotential = Android.OS.Environment.ExternalStorageDirectory.TotalSpace;
+
+            long spaceInGB = TotalSpacePotential - TotalRemainingSpace;
+            spaceInGB = spaceInGB / TotalSpacePotential; //nGB /= 1000000000;
             
-            GBRemainLbl.Text = (Android.OS.Environment.ExternalStorageDirectory.TotalSpace / ‭1000000000‬).ToString(); // bytes to gb
-            GBRemainLbl.Text += "GB.";
-            await GBPcntBar.ProgressTo(TotalRemainingSpace / TotalSpacePotential, 900, Easing.BounceIn); 
+            double spaceInPercent = spaceInGB * .01;
+
+            GBRemainLbl.Text = spaceInGB.ToString(); // bytes to gb
+            GBRemainLbl.Text += " GB";
+            await GBPcntBar.ProgressTo(spaceInPercent, 900, Easing.BounceIn); 
         }
 
         private void settings_Clicked(object sender, EventArgs e)
@@ -41,7 +46,7 @@ namespace DVR_Managing_App
 
         private void start_Clicked(object sender, EventArgs e)
         {
-            
+            PopulateDataAsync();
         }
     }
 }
