@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Todo
+namespace DVR_Managing_App.Models
 {
     public static class Constants
     {
@@ -19,7 +19,7 @@ namespace Todo
         {
             get
             {
-                var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var basePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 return Path.Combine(basePath, DatabaseFilename);
             }
         }

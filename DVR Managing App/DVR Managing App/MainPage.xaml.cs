@@ -14,6 +14,7 @@ using Plugin.Permissions;
 using Java.Security;
 using SQLite;
 using DVR_Managing_App.DataHelpers;
+using DVR_Managing_App.Models;
 
 namespace DVR_Managing_App
 {
@@ -101,24 +102,27 @@ namespace DVR_Managing_App
                 DisplayAlert("File loc", "NULL", "OK");
             }
 
-            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=RecordingsDB.db;Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection(Constants.DatabasePath, Constants.Flags))
             {
+                conn.DropTable<Recordings>();
                 conn.CreateTable<Recordings>();
 
                 Recordings rec = new Recordings()
                 {
                     dateRecorded = DateTime.Now,
-                    fileFormat = "mp4",
+                    fileFormat = "test",
                     fileId = 0,
                     fileName = file.Path,
-                    deviceRecordedWith = "PIXEL 4 XL",
+                    deviceRecordedWith = "TEST DATA",
                     fileType = 0,
                     googleDriveId = "",
-                    resolution = "1920x1080"
+                    resolution = "1x1"
                 };
 
                 conn.Insert(rec);
+                var RESULT = conn.Query<Recordings>("SELECT * FROM RECORDINGS");
             }
+
 
             UploadNewFilesToDrive();
 

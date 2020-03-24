@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace Todo
+namespace DVR_Managing_App.Models
 {
     public class TodoItem
     {

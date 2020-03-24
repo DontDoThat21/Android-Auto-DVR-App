@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Todo
+namespace DVR_Managing_App.Models
 {
     public static class TaskExtensions
     {
