@@ -76,6 +76,7 @@ namespace DVR_Managing_App
 
         private async void StartRecording()
         {
+            // Should really considering using these useful vars.
             bool isAvail = CrossMedia.Current.IsCameraAvailable;
             bool isTakePhotoSupported = CrossMedia.Current.IsTakePhotoSupported;
             bool isTakeVideoSupported = CrossMedia.Current.IsTakeVideoSupported;
@@ -91,11 +92,14 @@ namespace DVR_Managing_App
 
             await CrossPermissions.Current.RequestPermissionsAsync(new[] { Plugin.Permissions.Abstractions.Permission.Camera });
 
+            string fileName = $"DVR. Rec. {DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()}.mp4";
             var file = await CrossMedia.Current.TakeVideoAsync(new Plugin.Media.Abstractions.StoreVideoOptions
             {
-                Directory = "Sample",
-                CompressionQuality = 92,                
-                Name = $"DVR. Rec. {DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()}.mp4"
+                Directory = "Recordings",
+                DefaultCamera = CameraDevice.Rear,
+                CompressionQuality = 92,          
+                SaveMetaData = true,
+                Name = fileName
             });
 
             if (!file.Path.Equals(string.Empty))
@@ -138,7 +142,7 @@ namespace DVR_Managing_App
                 {
                     dateRecorded = DateTime.Now,
                     fileFormat = "mp4",
-                    fileName = file.Path,
+                    fileName = fileName,
                     deviceRecordedWith = phone.phoneName,
                     fileType = 0,
                     googleDriveId = "",
