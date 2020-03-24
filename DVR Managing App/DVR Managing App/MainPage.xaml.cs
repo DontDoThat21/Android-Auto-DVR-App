@@ -15,6 +15,7 @@ using Java.Security;
 using SQLite;
 using DVR_Managing_App.DataHelpers;
 using DVR_Managing_App.Models;
+using Xamarin.Essentials;
 
 namespace DVR_Managing_App
 {
@@ -93,34 +94,60 @@ namespace DVR_Managing_App
             var file = await CrossMedia.Current.TakeVideoAsync(new Plugin.Media.Abstractions.StoreVideoOptions
             {
                 Directory = "Sample",
-                CompressionQuality = 92,
+                CompressionQuality = 92,                
                 Name = $"DVR. Rec. {DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()}.mp4"
             });
 
             if (!file.Path.Equals(string.Empty))
             {
-                DisplayAlert("File loc", "NULL", "OK");
+                DisplayAlert("File location.", "NULL", "OK");
             }
 
             using (SQLiteConnection conn = new SQLiteConnection(Constants.DatabasePath, Constants.Flags))
             {
-                conn.DropTable<Recordings>();
+                //conn.DropTable<Recordings>();
                 conn.CreateTable<Recordings>();
+                conn.CreateTable<Phones>();
 
+                Phones phone;
+                // See if phone model type has existed before?
+                List<Phones> matchingPhone = conn.Query<Phones>($"SELECT * FROM PHONES WHERE DEVICENAME = '{DeviceInfo.Name}'");
+                if (matchingPhone.Count > 0)
+                {
+                    // must already exist! Do not add.
+                    phone = matchingPhone.FirstOrDefault();
+                }
+                else
+                {                
+                    // init a new phone for insert db record
+                    phone = new Phones()
+                    {
+                        deviceName = DeviceInfo.Name,
+                        manufacturer = DeviceInfo.Manufacturer,
+                        osVersion = DeviceInfo.VersionString,
+                        platform = DeviceInfo.Platform.ToString(),
+                        phoneAddDt = DateTime.Now,
+                        phoneName = DeviceInfo.Model
+                    };
+                    conn.Insert(phone);
+                }
+
+
+                // init a new recording db record
                 Recordings rec = new Recordings()
                 {
                     dateRecorded = DateTime.Now,
-                    fileFormat = "test",
-                    fileId = 0,
+                    fileFormat = "mp4",
                     fileName = file.Path,
-                    deviceRecordedWith = "TEST DATA",
+                    deviceRecordedWith = phone.phoneName,
                     fileType = 0,
                     googleDriveId = "",
-                    resolution = "1x1"
+                    resolution = "1920x1080"
                 };
-
                 conn.Insert(rec);
-                var RESULT = conn.Query<Recordings>("SELECT * FROM RECORDINGS");
+
+                List<Recordings> recs  = conn.Query<Recordings>("SELECT * FROM RECORDINGS");
+                List<Phones> phones  = conn.Query<Phones>("SELECT * FROM PHONES");
             }
 
 
@@ -130,7 +157,7 @@ namespace DVR_Managing_App
 
         private void UploadNewFilesToDrive()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void settings_Clicked(object sender, EventArgs e)
