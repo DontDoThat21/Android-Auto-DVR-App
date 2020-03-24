@@ -12,6 +12,8 @@ using Plugin.Media;
 using Plugin.Media.Abstractions;
 using Plugin.Permissions;
 using Java.Security;
+using SQLite;
+using DVR_Managing_App.DataHelpers;
 
 namespace DVR_Managing_App
 {
@@ -27,7 +29,7 @@ namespace DVR_Managing_App
         public MainPage()
         {
             InitializeComponent();
-            CrossTextToSpeech.Current.Speak("BEEEEEP SKEET BEEEEEP", null, 2.0f, 2, 1, default);
+            CrossTextToSpeech.Current.Speak("APPLICATION LAUNCHED.", null, 0.9F, 0.9F, 1, default);
             PopulateDataAsync();
         }
 
@@ -87,16 +89,44 @@ namespace DVR_Managing_App
 
             await CrossPermissions.Current.RequestPermissionsAsync(new[] { Plugin.Permissions.Abstractions.Permission.Camera });
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            var file = await CrossMedia.Current.TakeVideoAsync(new Plugin.Media.Abstractions.StoreVideoOptions
             {
-                Directory = "Sample",     
+                Directory = "Sample",
                 CompressionQuality = 92,
-                Name = "testafrica1212111.jpg"
+                Name = $"DVR. Rec. {DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()}.mp4"
             });
 
-            DisplayAlert("File loc", file.Path, "OK");
+            if (!file.Path.Equals(string.Empty))
+            {
+                DisplayAlert("File loc", "NULL", "OK");
+            }
 
+            using (SQLiteConnection conn = new SQLiteConnection(@"Data Source=RecordingsDB.db;Version=3;"))
+            {
+                conn.CreateTable<Recordings>();
 
+                Recordings rec = new Recordings()
+                {
+                    dateRecorded = DateTime.Now,
+                    fileFormat = "mp4",
+                    fileId = 0,
+                    fileName = file.Path,
+                    deviceRecordedWith = "PIXEL 4 XL",
+                    fileType = 0,
+                    googleDriveId = "",
+                    resolution = "1920x1080"
+                };
+
+                conn.Insert(rec);
+            }
+
+            UploadNewFilesToDrive();
+
+        }
+
+        private void UploadNewFilesToDrive()
+        {
+            throw new NotImplementedException();
         }
 
         private void settings_Clicked(object sender, EventArgs e)
