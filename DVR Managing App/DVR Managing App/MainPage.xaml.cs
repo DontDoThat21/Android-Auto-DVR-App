@@ -136,7 +136,7 @@ namespace DVR_Managing_App
                     conn.Insert(phone);
                 }
 
-
+                //
                 // init a new recording db record
                 Recordings rec = new Recordings()
                 {
