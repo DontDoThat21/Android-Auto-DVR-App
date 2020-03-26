@@ -166,7 +166,7 @@ namespace DVR_Managing_App
 
         private void settings_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new SettingsPage());
+            Navigation.PushAsync(new RecordingPage());
         }
 
         private void start_Clicked(object sender, EventArgs e)

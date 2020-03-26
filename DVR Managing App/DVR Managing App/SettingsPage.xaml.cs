@@ -9,12 +9,15 @@ using Xamarin.Forms.Xaml;
 
 namespace DVR_Managing_App
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class SettingsPage : ContentPage
-{
-    public SettingsPage()
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class SettingsPage : ContentPage
     {
-        InitializeComponent();
+
+        public static event EventHandler<ImageSource> PhotoCapturedEvent;
+
+        public SettingsPage()
+        {
+            InitializeComponent();
+        }
     }
-}
 }

@@ -12,9 +12,21 @@ namespace DVR_Managing_App
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class RecordingPage : ContentPage
 {
-    public RecordingPage()
-    {
-        InitializeComponent();
+        public static event EventHandler<ImageSource> PhotoCapturedEvent;
+        
+        public RecordingPage()
+        {
+            InitializeComponent();
+            
+            PhotoCapturedEvent += (sender, source) =>
+            {
+                PhotoCaptured.Source = source;
+            };
+        }
+        
+        public static void OnPhotoCaptured(ImageSource src)
+        {
+            PhotoCapturedEvent?.Invoke(new MainPage(), src);
+        }
     }
-}
 }

@@ -6,7 +6,8 @@
              mc:Ignorable="d"
              x:Class="DVR_Managing_App.RecordingPage">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="#000">
+            <Image x:Name="PhotoCaptured"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

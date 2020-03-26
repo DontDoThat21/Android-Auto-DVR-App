@@ -71,6 +71,13 @@
     <Compile Include="AndroidStorageDependency.cs" />
     <Compile Include="Assets\StorageAndroid.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Renderers\Camera\CameraCaptureListener.cs" />
+    <Compile Include="Renderers\Camera\CameraCaptureStateListener.cs" />
+    <Compile Include="Renderers\Camera\CameraDroid.cs" />
+    <Compile Include="Renderers\Camera\CameraStateListener.cs" />
+    <Compile Include="Renderers\Camera\CameraTextureView.cs" />
+    <Compile Include="Renderers\Camera\CameraViewServiceRenderer.cs" />
+    <Compile Include="Renderers\Camera\ImageAvailableListener.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -114,6 +121,12 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\CameraLayout.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\strings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
