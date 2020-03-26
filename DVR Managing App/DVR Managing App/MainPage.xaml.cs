@@ -16,6 +16,7 @@ using SQLite;
 using DVR_Managing_App.DataHelpers;
 using DVR_Managing_App.Models;
 using Xamarin.Essentials;
+using Android.Hardware;
 
 namespace DVR_Managing_App
 {
@@ -76,6 +77,26 @@ namespace DVR_Managing_App
 
         private async void StartRecording()
         {
+            //BEG NEW CAM
+            //BEG NEW CAM
+            //BEG NEW CAM
+            // ignore all this until end new cam.. couldn't figure out how to use camera2/camera api.
+
+            Camera camera = Camera.Open();
+            Camera.Parameters paramaters = camera.GetParameters();
+                        
+
+            //set res,frame rt, prev frmt, etc.
+
+            camera.SetParameters(paramaters);
+
+            //camera.SetPreviewDisplay(SurfaceView);       
+            //camera.StartPreview();       
+
+            //END NEW CAM
+            //END NEW CAM
+            //END NEW CAM
+
             // Should really considering using these useful vars.
             bool isAvail = CrossMedia.Current.IsCameraAvailable;
             bool isTakePhotoSupported = CrossMedia.Current.IsTakePhotoSupported;
@@ -94,7 +115,7 @@ namespace DVR_Managing_App
 
             string fileName = $"DVR. Rec. {DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()}.mp4";
             var file = await CrossMedia.Current.TakeVideoAsync(new Plugin.Media.Abstractions.StoreVideoOptions
-            {
+            {                
                 Directory = "Recordings",
                 DefaultCamera = CameraDevice.Rear,
                 CompressionQuality = 92,          
@@ -102,10 +123,8 @@ namespace DVR_Managing_App
                 Name = fileName
             });
 
-            if (!file.Path.Equals(string.Empty))
-            {
-                DisplayAlert("File location.", "NULL", "OK");
-            }
+            if (file == null)
+                return;
 
             using (SQLiteConnection conn = new SQLiteConnection(Constants.DatabasePath, Constants.Flags))
             {
@@ -135,8 +154,7 @@ namespace DVR_Managing_App
                     };
                     conn.Insert(phone);
                 }
-
-                //
+                
                 // init a new recording db record
                 Recordings rec = new Recordings()
                 {
@@ -153,7 +171,6 @@ namespace DVR_Managing_App
                 List<Recordings> recs  = conn.Query<Recordings>("SELECT * FROM RECORDINGS");
                 List<Phones> phones  = conn.Query<Phones>("SELECT * FROM PHONES");
             }
-
 
             UploadNewFilesToDrive();
 

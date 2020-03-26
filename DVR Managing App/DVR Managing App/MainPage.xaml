@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:Android.Views;assembly=Mono.Android"
              mc:Ignorable="d"
              x:Class="DVR_Managing_App.MainPage">
 
@@ -12,6 +12,7 @@
         <StackLayout Padding="5, 2, 5, 2">
             <Frame BorderColor="Orange" Padding="3, 3, 3, 3">
                 <Grid BackgroundColor="CornflowerBlue">
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="1*"/>
@@ -31,10 +32,10 @@
                     </StackLayout>
                     <StackLayout Grid.Column="0" Grid.Row="2" WidthRequest="100" Padding="5, 0, 5, 0">
                         <Frame Padding="0,0,0,0" BorderColor="Black">
-                            <ProgressBar x:Name="GBPcntBar" ProgressColor="Green" Progress="1" VerticalOptions="Center"/>                            
+                            <ProgressBar x:Name="GBPcntBar" ProgressColor="Green" Progress="1" VerticalOptions="Center"/>
                         </Frame>
                     </StackLayout>
-                    
+
                     <StackLayout Grid.Column="1" Grid.Row="0">
                         <Label Text="GDrive GB Total" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
                     </StackLayout>
@@ -43,14 +44,14 @@
                     </StackLayout>
 
                     <Frame Grid.Column="2" Grid.RowSpan="3" Padding="2, 3, 2, 3">
-                        <Button Text="SETTINGS/EXTRA" Grid.Column="2" Grid.RowSpan="3" TextColor="GhostWhite" BackgroundColor="Accent" Clicked="settings_Clicked"/>                        
+                        <Button Text="SETTINGS/EXTRA" Grid.Column="2" Grid.RowSpan="3" TextColor="GhostWhite" BackgroundColor="Accent" Clicked="settings_Clicked"/>
                     </Frame>
 
 
                 </Grid>
-            </Frame>            
+            </Frame>
         </StackLayout>
         <Button Text="START" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Green" TextColor="GhostWhite" Clicked="start_Clicked"/>
     </StackLayout>
-
+    
 </ContentPage>
